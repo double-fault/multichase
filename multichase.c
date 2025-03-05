@@ -162,7 +162,8 @@ static void chase_work(per_thread_t *t) {
   // deref occurs.
   do {
     x25(work += (uintptr_t)p; p = *(void **)p;
-        for (i = 0; i < extra_work; ++i) { work ^= i; })
+        for (i = 0; i < extra_work; ++i) { work ^= i; }
+        asm("" : "+r"(work) :: "memory"); )
   } while (__sync_add_and_fetch(&t->x.count, 25));
 
   // we never actually reach here, but the compiler doesn't know that
